@@ -1,17 +1,17 @@
-import { GlobalCommand } from './GlobalCommand';
+import type { GlobalCommand, GlobalCommandGroup } from './GlobalCommand';
 
 //
 //
 
 export function validateCommands(
-  commands: GlobalCommand[] | Record<string, GlobalCommand>,
+  commands: GlobalCommand[] | GlobalCommandGroup,
 ) {
   if (
     typeof commands === 'object' &&
     !Array.isArray(commands) &&
     commands != null
   ) {
-    commands = Object.values(commands);
+    commands = Object.values(commands.commands);
   }
 
   //
