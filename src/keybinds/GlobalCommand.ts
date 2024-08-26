@@ -63,8 +63,10 @@ export type GlobalCommandGroup<
 //
 
 /**
- * Função para criar os comandos adicionando o `group` `mutates` o objeto passado para economizar
+ * Função para criar os comandos adicionando o {@link GlobalCommand.group} e o {@link GlobalCommand.code} ao objeto passado para economizar
  * impacto de performance na inicialização da aplicação, caso haja muitos comandos
+ *
+ * > **Important:** mutates the object passed to economize performance, it is the only function that does this in the library
  *
  * @example
  * ```ts
