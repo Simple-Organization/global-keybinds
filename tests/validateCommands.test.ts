@@ -7,18 +7,16 @@ import { validateCommands } from '../src/keybinds/validateCommands';
 
 test.describe('validateCommands', () => {
   test('Must validate correctly', () => {
-    const commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos',
+    const commands = createGlobalCommands('vendas', {
+      abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1',
       },
-      {
-        code: 'abrir_gaveta',
+      abrir_gaveta: {
         description: 'Abrir gaveta',
         key: 'ctrl+g',
       },
-    ]);
+    });
 
     //
     // Must throw
@@ -29,38 +27,12 @@ test.describe('validateCommands', () => {
   //
   //
 
-  test('Must throw because of duplicated commands', () => {
-    const commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos',
-        description: 'Abrir escolha de comandos disponíveis',
-        key: 'f1',
-      },
-      {
-        code: 'abrir_escolha_comandos',
-        description: 'Abrir gaveta',
-        key: 'ctrl+g',
-      },
-    ]);
-
-    //
-    // Must throw
-
-    expect(() => validateCommands(commands)).toThrowError(
-      'Duplicated codes abrir_escolha_comandos',
-    );
-  });
-
-  //
-  //
-
   test('Must throw because of not having description', () => {
-    const commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos',
+    const commands = createGlobalCommands('vendas', {
+      abrir_escolha_comandos: {
         key: 'f1',
-      } as any,
-    ]);
+      },
+    } as any);
 
     //
     // Must throw
@@ -73,38 +45,17 @@ test.describe('validateCommands', () => {
   //
   //
 
-  test('Must throw because of not having code', () => {
-    const commands = createGlobalCommands('vendas', [
-      {
-        description: 'Abrir escolha de comandos disponíveis',
-        key: 'f1',
-      } as any,
-    ]);
-
-    //
-    // Must throw
-
-    expect(() => validateCommands(commands)).toThrowError(
-      'Commands without code Abrir escolha de comandos disponíveis',
-    );
-  });
-
-  //
-  //
-
   test('Must throw because of duplicated key', () => {
-    const commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos',
+    const commands = createGlobalCommands('vendas', {
+      abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1',
       },
-      {
-        code: 'abrir_gaveta',
+      abrir_gaveta: {
         description: 'Abrir gaveta',
         key: 'f1',
       },
-    ]);
+    });
 
     //
     // Must throw
@@ -115,72 +66,80 @@ test.describe('validateCommands', () => {
   //
   //
 
+  test('Must throw because child is not object', () => {
+    //
+    // Must throw
+
+    expect(() => {
+      createGlobalCommands('vendas', {
+        description: 'Abrir escolha de comandos disponíveis',
+        key: 'f1',
+      } as any);
+    }).toThrowError();
+  });
+
+  //
+  //
+
   test('Must throw because of invalid keys', () => {
-    let commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos',
+    const commands1 = createGlobalCommands('vendas', {
+      abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1+ctrl',
       },
-    ]);
+    });
 
     //
     // Must throw
 
-    expect(() => validateCommands(commands)).toThrowError(
+    expect(() => validateCommands(commands1)).toThrowError(
       'Invalid key(s) f1+ctrl. Keys must follow the pattern in that order ctrl+shift+alt+key. All must be lowercase. And must have a non modifier key',
     );
 
     //
     //
-    commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos',
+    const commands2 = createGlobalCommands('vendas', {
+      abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl',
       },
-    ]);
+    });
 
     //
     // Must throw
 
-    expect(() => validateCommands(commands)).toThrowError(
+    expect(() => validateCommands(commands2)).toThrowError(
       'Invalid key(s) ctrl. Keys must follow the pattern in that order ctrl+shift+alt+key. All must be lowercase. And must have a non modifier key',
     );
 
     //
     //
-    commands = createGlobalCommands('vendas', [
-      {
-        code: 'abrir_escolha_comandos1',
+    const commands3 = createGlobalCommands('vendas', {
+      abrir_escolha_comandos1: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl+a',
       },
-      {
-        code: 'abrir_escolha_comandos2',
+      abrir_escolha_comandos2: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl+b',
       },
-      {
-        code: 'abrir_escolha_comandos3',
+      abrir_escolha_comandos3: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl+/',
       },
-      {
-        code: 'abrir_escolha_comandos4',
+      abrir_escolha_comandos4: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl+{',
       },
-      {
-        code: 'abrir_escolha_comandos5',
+      abrir_escolha_comandos5: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl+.',
       },
-    ]);
+    });
 
     //
     // Must not throw
 
-    validateCommands(commands);
+    validateCommands(commands3);
   });
 });

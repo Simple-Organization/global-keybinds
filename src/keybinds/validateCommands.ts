@@ -3,7 +3,17 @@ import { GlobalCommand } from './GlobalCommand';
 //
 //
 
-export function validateCommands(commands: GlobalCommand[]) {
+export function validateCommands(
+  commands: GlobalCommand[] | Record<string, GlobalCommand>,
+) {
+  if (
+    typeof commands === 'object' &&
+    !Array.isArray(commands) &&
+    commands != null
+  ) {
+    commands = Object.values(commands);
+  }
+
   //
   const codes = commands.map((command) => command.code);
   const keys = commands
@@ -20,26 +30,6 @@ export function validateCommands(commands: GlobalCommand[]) {
         .map((command) => command.code)
         .join(', ')}`,
     );
-  }
-
-  //
-  // Without code
-  const withoutCode = commands.filter((command) => !command.code);
-
-  if (withoutCode.length > 0) {
-    throw new Error(
-      `Commands without code ${withoutCode.map((command) => command.description).join(', ')}`,
-    );
-  }
-
-  //
-  // Check if there are duplicated codes
-  const duplicatedCodes = codes.filter(
-    (code, index) => codes.indexOf(code) !== index,
-  );
-
-  if (duplicatedCodes.length > 0) {
-    throwDuplicated('codes', duplicatedCodes);
   }
 
   //

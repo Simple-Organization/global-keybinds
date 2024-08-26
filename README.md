@@ -1,11 +1,71 @@
-# frontend-utils
+# global-keybinds
 
-Pacote simples com alguns utilitários para **frontend**, se algum deles ficar grande demais, é possível que ele ganhe um pacote **npm** próprio
+Pacote para o **navegador** com o intuito de criar comandos globais que possam ser exibidos para o usuário
 
-## Keybinds / Commands
+## Keybinds / GlobalCommands
 
-Nós haviamos criado no `singularity` um modelo da qual se usava `scope` (escopo) para usar as `keys`
+As **keybinds** devem ser criadas como `GlobalCommand`
 
-No `new-singularity` nós criamos o modelo similar ao `vscode`, aonde todos os comandos são únicos, mas eles são ativados ou desativados de acordo com o contexto, essa aplicação seguirá esse modelo
+Quando um componente registra seus métodos com `useCommands` (é diferente de acordo com o framework usado que dermos suporte), o comando passa a ficar ativo
 
-No `new-singularity` ele sempre validava todos comandos no inicio da aplicação, para ver duplicados, ou `keybinds` inválidas, aqui é necessário usar o método `validateCommands` em um ambiente de testes
+### Exemplo de criação de comandos
+
+```ts
+import { createGlobalCommands } from 'global-keybinds';
+
+// Comandos relacionados a vendas
+const salesCmds = createGlobalCommands('vendas', [
+  {
+    code: 'abrir_escolha_comandos',
+    description: 'Abrir escolha de comandos disponíveis',
+    key: 'f1',
+  },
+  {
+    code: 'abrir_gaveta',
+    description: 'Abrir gaveta',
+    key: 'ctrl+g',
+  },
+  {
+    code: 'fechar_gaveta_do_fundo',
+    description: 'Fechar gaveta do fundo',
+    key: 'ctrl+l',
+  },
+]);
+```
+
+### Criando o `useCommands`
+
+Primeiro precisamos criar o `useCommands` com o `root` da aplicação, pode ser a `div` usada, ou o `document`
+
+A intenção é de se só utilizar um `root.addEventListener('keydown')` para toda a aplicação
+
+```ts
+import { createUseCommands } from 'global-keybinds/svelte'; // Damos suporte ao preact também
+
+const appDiv = document.getElementById('app');
+
+const useCommands = createUseCommands(appDiv, [...otherCommands, salesCmds]);
+```
+
+### Usando o `useCommands`
+
+```svelte
+<script>
+import { useCommands } from '../somewhere'
+
+useCommands({
+  abrir_escolha_comandos() {
+    // Os métodos não recebem argumentos
+  },
+  abrir_gaveta() {
+    // Não registramos a função do comando fechar_gaveta_do_fundo, então por conta disso nesse escopo essa função está desativada
+  },
+})
+</script>
+```
+
+Todo componente filho que chamar o `useCommands` sobreescreverá todos os comandos dos componentes pais, até que o componente que chamou `useCommands` seja destruído
+
+### Validação das keybinds
+
+Disponibilizamos o método `validateCommands` para validar se os comandos estão seguindo o padrão correto, recomendamos que chame o `validateCommands` em testes automatizados, especialmente se você possui uma quantidade muito grande de comandos, pois se eles não estiverem seguindo o padrão correto, é possível que haja bugs

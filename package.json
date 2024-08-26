@@ -1,5 +1,5 @@
 {
-  "name": "frontend-utils",
+  "name": "global-keybinds",
   "version": "1.0.0-next.0",
   "author": "Simple Organization",
   "scripts": {
@@ -11,9 +11,9 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Simple-Organization/frontend-utils.git"
+    "url": "https://github.com/Simple-Organization/global-keybinds.git"
   },
-  "bugs": "https://github.com/Simple-Organization/frontend-utils/issues",
+  "bugs": "https://github.com/Simple-Organization/global-keybinds/issues",
   "license": "MIT",
   "devDependencies": {
     "@playwright/test": "^1.46.1",

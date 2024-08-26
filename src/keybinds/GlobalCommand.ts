@@ -1,7 +1,7 @@
 //
 //
 
-export type GlobalCommand = {
+export type GlobalCommand<G extends string = any> = {
   /**
    * Código do comando que será usado para identificar o comando
    *
@@ -33,7 +33,7 @@ export type GlobalCommand = {
   /**
    * Grupo para organização dos comandos na visualização dos comandos
    */
-  group: string;
+  group: G;
 };
 
 //
@@ -63,12 +63,14 @@ export type GlobalCommand = {
  * @param commands Objeto com os comandos
  * @returns Os comandos com os códigos e grupos definidos
  */
-export function createGlobalCommands<T extends Omit<GlobalCommand, 'group'>[]>(
-  group: string,
-  commands: T,
-): GlobalCommand[] {
-  for (const cmd of commands) {
-    (cmd as any).group = group;
+export function createGlobalCommands<
+  T extends Record<string, Omit<GlobalCommand, 'group' | 'code'>>,
+  G extends Readonly<string>,
+  K extends keyof T,
+>(group: G, commands: T): Record<K, GlobalCommand<G>> {
+  for (const key of Object.keys(commands)) {
+    (commands[key] as any).code = key;
+    (commands[key] as any).group = group;
   }
 
   return commands as any;
