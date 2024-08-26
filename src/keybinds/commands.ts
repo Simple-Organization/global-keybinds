@@ -1,3 +1,6 @@
+//
+//
+
 export type CommandDescription = {
   /**
    * Código do comando que será usado para identificar o comando
@@ -31,11 +34,42 @@ export type CommandDescription = {
    * Grupo para organização dos comandos na visualização dos comandos
    */
   group: string;
-
-  /**
-   * Se o comando está desativado dependendo da configuração do programa
-   *
-   * exemplo: Se a configuração do programa não permite venda a prazo, ou desconto na venda
-   */
-  disabled?: boolean;
 };
+
+//
+//
+
+/**
+ * Função para criar os comandos adicionando o `group` `mutates` o objeto passado para economizar
+ * impacto de performance na inicialização da aplicação, caso haja muitos comandos
+ *
+ * @example
+ * ```ts
+ * const commands = createCommands('vendas', [
+ *   {
+ *     code: 'abrir_escolha_comandos',
+ *     description: 'Abrir escolha de comandos disponíveis',
+ *     key: 'f1',
+ *   },
+ *   {
+ *     code: 'abrir_gaveta',
+ *     description: 'Abrir gaveta',
+ *     key: 'ctrl+g',
+ *   },
+ * ]);
+ * ```
+ *
+ * @param group O nome do grupo que os comandos pertencem
+ * @param commands Objeto com os comandos
+ * @returns Os comandos com os códigos e grupos definidos
+ */
+export function createCommands<T extends Omit<CommandDescription, 'group'>[]>(
+  group: string,
+  commands: T,
+): CommandDescription[] {
+  for (const cmd of commands) {
+    (cmd as any).group = group;
+  }
+
+  return commands as any;
+}
