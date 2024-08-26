@@ -1,6 +1,6 @@
 import { createCommandsManager } from '../src/keybinds/createCommandsManager';
-import { createGlobalCommands } from '../src/keybinds/GlobalCommand';
 import { expect, test } from '@playwright/test';
+import { createGlobalCommands } from '../src/keybinds/createGlobalCommands';
 
 //
 //
