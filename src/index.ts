@@ -1,7 +1,15 @@
 //
 //
 
+export { createCommands } from './keybinds/createCommands';
+
 export { createCommandsManager } from './keybinds/createCommandsManager';
 
-export { createGlobalCommands, type GlobalCommand } from './keybinds/types';
+export type {
+  GlobalCommand,
+  CommandsScope,
+  GlobalCommandGroup,
+  GlobalCommandsManager,
+} from './keybinds/types';
+
 export { validateCommands } from './keybinds/validateCommands';
