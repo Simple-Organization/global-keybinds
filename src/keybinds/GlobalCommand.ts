@@ -33,7 +33,30 @@ export type GlobalCommand<G extends string = any> = {
   /**
    * Grupo para organização dos comandos na visualização dos comandos
    */
+  group: GlobalCommandGroup<G>;
+};
+
+//
+//
+
+export type GlobalCommandGroup<
+  G extends string = any,
+  K extends string[] = any,
+> = {
+  /**
+   * Grupo para organização dos comandos na visualização dos comandos
+   */
   group: G;
+
+  /**
+   * Codes dos comandos do grupo
+   */
+  codes: K;
+
+  /**
+   * Comandos do grupo
+   */
+  commands: Record<K[number], GlobalCommand<G>>;
 };
 
 //
@@ -66,12 +89,29 @@ export type GlobalCommand<G extends string = any> = {
 export function createGlobalCommands<
   T extends Record<string, Omit<GlobalCommand, 'group' | 'code'>>,
   G extends Readonly<string>,
-  K extends keyof T,
->(group: G, commands: T): Record<K, GlobalCommand<G>> {
-  for (const key of Object.keys(commands)) {
+  K extends keyof T & string,
+>(group: G, commands: T): GlobalCommandGroup<G, K[]> {
+  const keys = Object.keys(commands);
+
+  //
+  //
+
+  const _group: GlobalCommandGroup<G, any> = {
+    group,
+    codes: keys,
+    commands: commands as any,
+  };
+
+  //
+  //
+
+  for (const key of keys) {
     (commands[key] as any).code = key;
     (commands[key] as any).group = group;
   }
 
-  return commands as any;
+  //
+  //
+
+  return _group;
 }

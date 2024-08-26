@@ -44,7 +44,7 @@ import { createUseCommands } from 'global-keybinds/svelte'; // Damos suporte ao 
 
 const appDiv = document.getElementById('app');
 
-const useCommands = createUseCommands(appDiv, [...otherCommands, salesCmds]);
+const useCommands = createUseCommands(appDiv, [otherCommands, salesCmds]);
 ```
 
 ### Usando o `useCommands`
