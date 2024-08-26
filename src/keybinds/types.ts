@@ -13,15 +13,44 @@ export type CommandsScope<Codes extends string[]> = Partial<
 
 export type GlobalCommandsManager<Codes extends string[]> = {
   /**
-   * Use a {@link CommandsScope} and all `keydown` events in the {@link GlobalCommandsManager.setContainer} container
+   * Set a {@link CommandsScope} to be used and all `keydown` events in the {@link GlobalCommandsManager.setContainer setContainer} container
    * will be directed only to that {@link CommandsScope}.
    *
    * @param scope The {@link CommandsScope} to be used in the current moment.
    * @returns A function to stop using the specified {@link scope}.
    */
   useScope(scope: CommandsScope<Codes>): () => void;
+
+  /**
+   * Get a record containing all commands registered in the manager.
+   */
   getCmds(): Record<Codes[number], GlobalCommand>;
+
+  /**
+   * Set the container where the `keydown` events will be listened to. The {@link document} can be used as a container.
+   *
+   * {@link https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector | document.querySelector} method.
+   *
+   * ```ts
+   * // Example
+   * setContainer('#container');
+   * ```
+   *
+   * @param selector A string selector to find the container in the
+   */
   setContainer(selector: string): void;
+
+  /**
+   * Set the container where the `keydown` events will be listened to. The {@link document} can be used as a container.
+   *
+   * ```ts
+   * // Example
+   * setContainer(document);
+   * setContainer(document.querySelector('#container'));
+   * ```
+   *
+   * @param selector A string selector to find the container in the
+   */
   setContainer(element: HTMLElement): void;
 };
 
