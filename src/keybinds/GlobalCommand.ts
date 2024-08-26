@@ -1,6 +1,33 @@
 //
 //
 
+/**
+ * A record containing all commands that will be used. Only one scope can be used at a time.
+ */
+export type CommandsScope<Codes extends string[]> = Partial<
+  Record<Codes[number], () => void>
+>;
+
+//
+//
+
+export type GlobalCommandsManager<Codes extends string[]> = {
+  /**
+   * Use a {@link CommandsScope} and all `keydown` events in the {@link GlobalCommandsManager.setContainer} container
+   * will be directed only to that {@link CommandsScope}.
+   *
+   * @param scope The {@link CommandsScope} to be used in the current moment.
+   * @returns A function to stop using the specified {@link scope}.
+   */
+  useScope(scope: CommandsScope<Codes>): () => void;
+  getCmds(): Record<Codes[number], GlobalCommand>;
+  setContainer(selector: string): void;
+  setContainer(element: HTMLElement): void;
+};
+
+//
+//
+
 export type GlobalCommand<G extends string = any> = {
   /**
    * Código do comando que será usado para identificar o comando
