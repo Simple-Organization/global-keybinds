@@ -102,11 +102,14 @@ export function createCommandsManager<
       commandsArray.push(groups[key as any].commands);
     }
 
+    keybindsCodes = {};
+
     const result: Record<Codes[number], GlobalCommand> = commandsArray
       .flatMap((commands) => Object.entries(commands))
       .reduce(
         (acc, [key, value]) => {
           (acc as any)[key] = value;
+          keybindsCodes![value.key!] = key;
           return acc;
         },
         {} as Record<Codes[number], GlobalCommand>,
@@ -116,6 +119,14 @@ export function createCommandsManager<
 
     flattenedCommands = result;
     return flattenedCommands;
+  }
+
+  //
+  //
+
+  function getKeybinds(): Record<string, string> {
+    getCmds();
+    return keybindsCodes!;
   }
 
   //
@@ -141,7 +152,8 @@ export function createCommandsManager<
 
   return {
     useScope,
-    getCmds,
     setContainer,
+    getCmds,
+    getKeybinds,
   };
 }

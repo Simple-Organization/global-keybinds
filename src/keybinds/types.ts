@@ -27,6 +27,24 @@ export type GlobalCommandsManager<Codes extends string[]> = {
   getCmds(): Record<Codes[number], GlobalCommand>;
 
   /**
+   * Get a record containing all keybinds registered in the manager mapped by the {@link GlobalCommand.code codes}.
+   *
+   * This method is useful for testing purposes.
+   *
+   * ```ts
+   * // Example
+   * const keybinds = getKeybinds();
+   *
+   * console.log(keybinds);
+   * // {
+   * //   'ctrl+g': 'abrir_escolha_comandos',
+   * //   'ctrl+p': 'abrir_gaveta',
+   * // }
+   * ```
+   */
+  getKeybinds(): Record<string, string>;
+
+  /**
    * Set the container where the `keydown` events will be listened to. The {@link document} can be used as a container.
    *
    * {@link https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector | document.querySelector} method.

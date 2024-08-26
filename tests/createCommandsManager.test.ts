@@ -65,6 +65,26 @@ test.describe('createCommandsManager', () => {
       },
     });
   });
+
+  //
+  //
+
+  test('Must get the keybinds correctly', () => {
+    const manager = createCommandsManager([commands1, commands2]);
+
+    //
+    //
+
+    const cmds = manager.getKeybinds();
+
+    //
+
+    expect(cmds).toEqual({
+      f1: 'abrir_escolha_comandos',
+      'ctrl+g': 'abrir_gaveta',
+      'ctrl+a': 'fechar_gaveta',
+    });
+  });
 });
 
 //
