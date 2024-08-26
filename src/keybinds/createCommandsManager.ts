@@ -59,20 +59,12 @@ export function createCommandsManager<
       return false;
     }
 
-    console.log('Reaching here');
-
     const lastScope: Partial<Record<Codes[number], () => void>> =
       scopes[scopes.length - 1];
 
-    console.log('lastScope', lastScope);
-
     const code = keybindsCodes![keyStr];
 
-    console.log('code', code);
-
     const listener: (() => void) | undefined = (lastScope as any)[code];
-
-    console.log('listener', listener);
 
     if (!listener) {
       return false;
