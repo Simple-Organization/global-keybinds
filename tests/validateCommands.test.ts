@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { createCommands } from '../src/keybinds/commands';
+import { createGlobalCommands } from '../src/keybinds/GlobalCommand';
 import { validateCommands } from '../src/keybinds/validateCommands';
 
 //
@@ -7,7 +7,7 @@ import { validateCommands } from '../src/keybinds/validateCommands';
 
 test.describe('validateCommands', () => {
   test('Must validate correctly', () => {
-    const commands = createCommands('vendas', [
+    const commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos',
         description: 'Abrir escolha de comandos disponíveis',
@@ -30,7 +30,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of duplicated commands', () => {
-    const commands = createCommands('vendas', [
+    const commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos',
         description: 'Abrir escolha de comandos disponíveis',
@@ -55,7 +55,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of not having description', () => {
-    const commands = createCommands('vendas', [
+    const commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos',
         key: 'f1',
@@ -74,7 +74,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of not having code', () => {
-    const commands = createCommands('vendas', [
+    const commands = createGlobalCommands('vendas', [
       {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1',
@@ -93,7 +93,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of duplicated key', () => {
-    const commands = createCommands('vendas', [
+    const commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos',
         description: 'Abrir escolha de comandos disponíveis',
@@ -116,7 +116,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of invalid keys', () => {
-    let commands = createCommands('vendas', [
+    let commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos',
         description: 'Abrir escolha de comandos disponíveis',
@@ -133,7 +133,7 @@ test.describe('validateCommands', () => {
 
     //
     //
-    commands = createCommands('vendas', [
+    commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos',
         description: 'Abrir escolha de comandos disponíveis',
@@ -150,7 +150,7 @@ test.describe('validateCommands', () => {
 
     //
     //
-    commands = createCommands('vendas', [
+    commands = createGlobalCommands('vendas', [
       {
         code: 'abrir_escolha_comandos1',
         description: 'Abrir escolha de comandos disponíveis',

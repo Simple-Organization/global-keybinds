@@ -1,9 +1,9 @@
-import { CommandDescription } from './commands';
+import { GlobalCommand } from './GlobalCommand';
 
 //
 //
 
-export function validateCommands(commands: CommandDescription[]) {
+export function validateCommands(commands: GlobalCommand[]) {
   //
   const codes = commands.map((command) => command.code);
   const keys = commands

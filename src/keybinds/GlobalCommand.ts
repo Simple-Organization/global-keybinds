@@ -1,7 +1,7 @@
 //
 //
 
-export type CommandDescription = {
+export type GlobalCommand = {
   /**
    * Código do comando que será usado para identificar o comando
    *
@@ -63,10 +63,10 @@ export type CommandDescription = {
  * @param commands Objeto com os comandos
  * @returns Os comandos com os códigos e grupos definidos
  */
-export function createCommands<T extends Omit<CommandDescription, 'group'>[]>(
+export function createGlobalCommands<T extends Omit<GlobalCommand, 'group'>[]>(
   group: string,
   commands: T,
-): CommandDescription[] {
+): GlobalCommand[] {
   for (const cmd of commands) {
     (cmd as any).group = group;
   }
