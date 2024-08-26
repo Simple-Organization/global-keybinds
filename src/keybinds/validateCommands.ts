@@ -1,4 +1,4 @@
-import type { GlobalCommand, GlobalCommandGroup } from './GlobalCommand';
+import type { GlobalCommand, GlobalCommandGroup } from './types';
 
 //
 //

@@ -1,4 +1,4 @@
-import type { GlobalCommand, GlobalCommandGroup } from './GlobalCommand';
+import type { GlobalCommand, GlobalCommandGroup } from './types';
 
 /**
  * Função para criar os comandos adicionando o {@link GlobalCommand.group} e o {@link GlobalCommand.code} ao objeto passado para economizar

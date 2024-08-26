@@ -3,7 +3,7 @@ import type {
   GlobalCommand,
   GlobalCommandGroup,
   GlobalCommandsManager,
-} from './GlobalCommand';
+} from './types';
 
 //
 //
