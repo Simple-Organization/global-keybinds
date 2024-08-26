@@ -45,6 +45,28 @@ export type GlobalCommandsManager<Codes extends string[]> = {
   getKeybinds(): Record<string, string>;
 
   /**
+   * Executes the command that has the keybind pressed using {@link KeyboardEvent}
+   * 
+   * @note That is the `keydown` event that will be listened to
+   * @returns If the keybind listener was executed
+   */
+  keybindPressed(e: KeyboardEvent): boolean;
+
+  /**
+   * Executes the command that has the keybind pressed using {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values | KeyboardEvent.key}
+   *
+   * Using the key combination as a string 
+   * ```ts
+   * // Example
+   * `ctrl+shift+alt+key`
+   * ```
+   * 
+   * @note That is the `keydown` event that will be listened to
+   * @returns If the keybind listener was executed
+   */
+  keybindPressed(keyStr: string): void;
+
+  /**
    * Set the container where the `keydown` events will be listened to. The {@link document} can be used as a container.
    *
    * {@link https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector | document.querySelector} method.
@@ -75,6 +97,18 @@ export type GlobalCommandsManager<Codes extends string[]> = {
 //
 //
 
+/**
+ * Representa um comando global da aplicação
+ *
+ * ```ts
+ * // Example
+ * const command: GlobalCommand = {
+ *   code: 'abrir_gaveta',
+ *   description: 'Abrir a gaveta de comandos',
+ *   key: 'ctrl+g',
+ * }
+ * ```
+ */
 export type GlobalCommand<G extends string = any> = {
   /**
    * Código do comando que será usado para identificar o comando
@@ -87,8 +121,14 @@ export type GlobalCommand<G extends string = any> = {
 
   /**
    * Descrição do comando, é a descrição que aparece para o usuário
-   * @example "Abrir gaveta"
-   * @example "Imprimir venda"
+   * ```ts
+   * // Example
+   * const command: GlobalCommand = {
+   *   code: 'abrir_gaveta',
+   *   description: 'Abrir a gaveta de comandos',
+   *   group: 'Comandos',
+   * }
+   * ```
    */
   description: string;
 
@@ -99,15 +139,14 @@ export type GlobalCommand<G extends string = any> = {
    *
    * Aonde é obrigatório ter a key, mas os outros são opcionais
    *
-   * E os keys precisam ser de acordo com (e: KeyboardEvent).key
-   * @example "ctrl+g"
+   * E os keys precisam ser de acordo com {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values | KeyboardEvent.key}
    */
   key?: string;
 
   /**
    * Grupo para organização dos comandos na visualização dos comandos
    */
-  group: GlobalCommandGroup<G>;
+  group: G;
 };
 
 //

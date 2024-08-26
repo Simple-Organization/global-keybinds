@@ -30,44 +30,68 @@ export function createCommandsManager<
   //
   //
 
-  function keybindPressed(e: KeyboardEvent) {
-    const keyStr = `${e.ctrlKey ? 'ctrl+' : ''}${e.shiftKey ? 'shift+' : ''}${
-      e.altKey ? 'alt+' : ''
-    }${e.key.toLowerCase()}`;
+  const noop = () => {};
 
-    if (!keybindsCodes![keyStr]) {
-      return;
+  //
+  //
+
+  function keybindPressed(e: KeyboardEvent | string): boolean {
+    if (scopes.length === 0) {
+      return false;
     }
+
+    let keyStr: string;
+    let preventDefault = noop;
+
+    if (typeof e === 'string') {
+      keyStr = e;
+    } else {
+      keyStr = `${e.ctrlKey ? 'ctrl+' : ''}${e.shiftKey ? 'shift+' : ''}${
+        e.altKey ? 'alt+' : ''
+      }${e.key.toLowerCase()}`;
+
+      preventDefault = () => e.preventDefault();
+    }
+
+    //
+
+    if (!keybindsCodes || !keybindsCodes[keyStr]) {
+      return false;
+    }
+
+    console.log('Reaching here');
 
     const lastScope: Partial<Record<Codes[number], () => void>> =
       scopes[scopes.length - 1];
 
+    console.log('lastScope', lastScope);
+
     const code = keybindsCodes![keyStr];
+
+    console.log('code', code);
 
     const listener: (() => void) | undefined = (lastScope as any)[code];
 
+    console.log('listener', listener);
+
     if (!listener) {
-      return;
+      return false;
     }
 
-    e.preventDefault();
+    preventDefault();
     listener();
+
+    return true;
   }
 
   //
   //
 
-  function start() {
-    htmlElement?.addEventListener('keydown', keybindPressed);
-    getCmds();
-  }
-
-  //
-  //
-
-  function stop() {
-    htmlElement?.removeEventListener('keydown', keybindPressed);
-  }
+  const addListener = () => {
+    if (scopes.length === 0) {
+      htmlElement?.addEventListener('keydown', keybindPressed);
+    }
+  };
 
   //
   //
@@ -75,11 +99,13 @@ export function createCommandsManager<
   function setContainer(element: HTMLElement | string) {
     if (typeof element === 'string') {
       htmlElement = document.querySelector(element);
+      addListener();
       return;
     }
 
     if ('addEventListener' in element) {
       htmlElement = element;
+      addListener();
       return;
     }
 
@@ -133,9 +159,8 @@ export function createCommandsManager<
   //
 
   function useScope(scope: CommandsScope<Codes>): () => void {
-    if (scopes.length === 0) {
-      start();
-    }
+    addListener();
+    getCmds();
 
     scopes.push(scope);
 
@@ -143,7 +168,7 @@ export function createCommandsManager<
       scopes = scopes.filter((s) => s !== scope);
 
       if (scopes.length === 0) {
-        stop();
+        htmlElement?.removeEventListener('keydown', keybindPressed);
       }
     };
   }
@@ -153,6 +178,7 @@ export function createCommandsManager<
   return {
     useScope,
     setContainer,
+    keybindPressed,
     getCmds,
     getKeybinds,
   };
