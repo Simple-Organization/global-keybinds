@@ -26,7 +26,7 @@ import type { GlobalCommand, GlobalCommandGroup } from './types';
  * @param commands Objeto com os comandos
  * @returns Os comandos com os códigos e grupos definidos
  */
-export function createGlobalCommands<
+export function createCommands<
   T extends Record<string, Omit<GlobalCommand, 'group' | 'code'>>,
   G extends Readonly<string>,
   K extends keyof T & string,

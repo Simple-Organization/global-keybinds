@@ -1,12 +1,12 @@
 import { createCommandsManager } from '../src/keybinds/createCommandsManager';
 import { expect, test } from '@playwright/test';
-import { createGlobalCommands } from '../src/keybinds/createGlobalCommands';
+import { createCommands } from '../src/keybinds/createCommands';
 
 //
 //
 
 test.describe('createCommandsManager', () => {
-  const commands1 = createGlobalCommands('vendas', {
+  const commands1 = createCommands('vendas', {
     abrir_escolha_comandos: {
       description: 'Abrir escolha de comandos disponíveis',
       key: 'f1',
@@ -17,7 +17,7 @@ test.describe('createCommandsManager', () => {
     },
   });
 
-  const commands2 = createGlobalCommands('vendas', {
+  const commands2 = createCommands('vendas', {
     fechar_gaveta: {
       description: 'Fechar gaveta',
       key: 'ctrl+a',
@@ -70,14 +70,14 @@ test.describe('createCommandsManager', () => {
 //
 //
 
-const cmd1 = createGlobalCommands('vendas', {
+const cmd1 = createCommands('vendas', {
   abrir_escolha_comandos: {
     description: 'Abrir escolha de comandos disponíveis',
     key: 'f1',
   },
 });
 
-const commands = createGlobalCommands('vendas', {
+const commands = createCommands('vendas', {
   abrir_escolha_comandos4: {
     description: 'Abrir escolha de comandos disponíveis',
     key: 'f1',
@@ -91,7 +91,7 @@ const commands = createGlobalCommands('vendas', {
 //
 //
 
-const cmd2 = createGlobalCommands('caixa', {
+const cmd2 = createCommands('caixa', {
   fechar_caixa: {
     description: 'Abrir escolha de comandos disponíveis',
     key: 'f1',

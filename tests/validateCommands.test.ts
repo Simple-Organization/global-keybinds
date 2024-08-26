@@ -1,13 +1,13 @@
 import { expect, test } from '@playwright/test';
 import { validateCommands } from '../src/keybinds/validateCommands';
-import { createGlobalCommands } from '../src/keybinds/createGlobalCommands';
+import { createCommands } from '../src/keybinds/createCommands';
 
 //
 //
 
 test.describe('validateCommands', () => {
   test('Must validate correctly', () => {
-    const commands = createGlobalCommands('vendas', {
+    const commands = createCommands('vendas', {
       abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1',
@@ -28,7 +28,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of not having description', () => {
-    const commands = createGlobalCommands('vendas', {
+    const commands = createCommands('vendas', {
       abrir_escolha_comandos: {
         key: 'f1',
       },
@@ -46,7 +46,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of duplicated key', () => {
-    const commands = createGlobalCommands('vendas', {
+    const commands = createCommands('vendas', {
       abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1',
@@ -71,7 +71,7 @@ test.describe('validateCommands', () => {
     // Must throw
 
     expect(() => {
-      createGlobalCommands('vendas', {
+      createCommands('vendas', {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1',
       } as any);
@@ -82,7 +82,7 @@ test.describe('validateCommands', () => {
   //
 
   test('Must throw because of invalid keys', () => {
-    const commands1 = createGlobalCommands('vendas', {
+    const commands1 = createCommands('vendas', {
       abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'f1+ctrl',
@@ -98,7 +98,7 @@ test.describe('validateCommands', () => {
 
     //
     //
-    const commands2 = createGlobalCommands('vendas', {
+    const commands2 = createCommands('vendas', {
       abrir_escolha_comandos: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl',
@@ -114,7 +114,7 @@ test.describe('validateCommands', () => {
 
     //
     //
-    const commands3 = createGlobalCommands('vendas', {
+    const commands3 = createCommands('vendas', {
       abrir_escolha_comandos1: {
         description: 'Abrir escolha de comandos disponíveis',
         key: 'ctrl+a',
