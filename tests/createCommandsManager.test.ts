@@ -225,6 +225,8 @@ test.describe('createCommandsManager', () => {
       },
     });
 
+    manager.setContainer(document);
+
     //
     // Must execute the keybind from the current scope
 

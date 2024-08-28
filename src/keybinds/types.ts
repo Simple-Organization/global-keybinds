@@ -45,8 +45,14 @@ export type GlobalCommandsManager<Codes extends string[]> = {
   getKeybinds(): Record<string, string>;
 
   /**
+   * Get the current {@link CommandsScope} being used if there is one.
+   * @returns The current {@link CommandsScope} being used.
+   */
+  getScope: () => CommandsScope<Codes> | undefined;
+
+  /**
    * Executes the command that has the keybind pressed using {@link KeyboardEvent}
-   * 
+   *
    * @note That is the `keydown` event that will be listened to
    * @returns If the keybind listener was executed
    */
@@ -55,12 +61,12 @@ export type GlobalCommandsManager<Codes extends string[]> = {
   /**
    * Executes the command that has the keybind pressed using {@link https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key/Key_Values | KeyboardEvent.key}
    *
-   * Using the key combination as a string 
+   * Using the key combination as a string
    * ```ts
    * // Example
    * `ctrl+shift+alt+key`
    * ```
-   * 
+   *
    * @note That is the `keydown` event that will be listened to
    * @returns If the keybind listener was executed
    */
@@ -91,7 +97,7 @@ export type GlobalCommandsManager<Codes extends string[]> = {
    *
    * @param selector A string selector to find the container in the
    */
-  setContainer(element: HTMLElement): void;
+  setContainer(element: Node): void;
 };
 
 //

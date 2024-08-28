@@ -21,7 +21,7 @@ export function createCommandsManager<
   //
   //
 
-  let htmlElement: HTMLElement | null = null;
+  let htmlElement: Node | null = null;
   let scopes: CommandsScope<Codes>[] = [];
 
   let flattenedCommands: Record<Codes[number], GlobalCommand> | null = null;
@@ -31,6 +31,9 @@ export function createCommandsManager<
   //
 
   const noop = () => {};
+
+  const getLastScope: () => CommandsScope<Codes> | undefined = () =>
+    scopes[scopes.length - 1];
 
   //
   //
@@ -59,8 +62,7 @@ export function createCommandsManager<
       return false;
     }
 
-    const lastScope: Partial<Record<Codes[number], () => void>> =
-      scopes[scopes.length - 1];
+    const lastScope = getLastScope();
 
     const code = keybindsCodes![keyStr];
 
@@ -81,14 +83,14 @@ export function createCommandsManager<
 
   const addListener = () => {
     if (scopes.length === 0) {
-      htmlElement?.addEventListener('keydown', keybindPressed);
+      htmlElement?.addEventListener('keydown', keybindPressed as any);
     }
   };
 
   //
   //
 
-  function setContainer(element: HTMLElement | string) {
+  function setContainer(element: string | Node): void {
     if (typeof element === 'string') {
       htmlElement = document.querySelector(element);
       addListener();
@@ -160,7 +162,7 @@ export function createCommandsManager<
       scopes = scopes.filter((s) => s !== scope);
 
       if (scopes.length === 0) {
-        htmlElement?.removeEventListener('keydown', keybindPressed);
+        htmlElement?.removeEventListener('keydown', keybindPressed as any);
       }
     };
   }
@@ -173,5 +175,6 @@ export function createCommandsManager<
     keybindPressed,
     getCmds,
     getKeybinds,
+    getScope: getLastScope,
   };
 }
